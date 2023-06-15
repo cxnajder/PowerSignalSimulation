@@ -1,6 +1,7 @@
 import numpy
 import matplotlib.pyplot as plt
 from scipy.fft import fft, fftfreq
+import random
 
 ### configurable data ###
 #frequency = 50
@@ -9,25 +10,59 @@ from scipy.fft import fft, fftfreq
 #step = 0.001
 ### ### ### ### ###
 
+print(
+    "1. polish power grid sin wave\n",
+    "2. define own signal",
+    sep = ""
+)
+user_choice = int(input())
 
-duration = float(input('time stop [s]: '))
-step = float(input('time step [s]: '))
-assert duration > step
+if user_choice == 1:
+    frequency_1 = 50
+    amplitude_1 = 325
+    duration = 0.1
+    step = 0.0005
+else:
+    duration = float(input('time stop [s]: '))
+    step = float(input('time step [s]: '))
+    assert duration > step
+
+    print('-------------------------')
+    print('FIRST SIGNAL PARAMETERS')
+    amplitude_1 = float(input('amplitude [V]: '))
+    frequency_1 = int(input('frequency [Hz]: '))
+
+
 time = numpy.arange(0, duration, step)
-
-print('-------------------------')
-print('FIRST SIGNAL PARAMETERS')
-frequency_1 = int(input('frequency [Hz]: '))
-amplitude_1 = int(input('amplitude [V]: '))
-
-print('-------------------------')
-print('SECOND SIGNAL PARAMETERS')
-frequency_2 = int(input('frequency [Hz]: '))
-amplitude_2 = int(input('amplitude [V]: '))
-
-#generating signals
 signal_1 = amplitude_1 * numpy.sin(2 * numpy.pi * time * frequency_1)
-signal_2 = amplitude_2 * numpy.sin(2 * numpy.pi * time * frequency_2)
+
+
+signal_2 = 0 * numpy.sin(2 * numpy.pi * time)
+
+def signal_input():
+    print('-------------------------')
+    print('ADDING NOISE')
+    amplitude = input('amplitude [V]: ')
+    if amplitude == 'random':
+        min_A = int(input('min: '))
+        max_A = int(input('max: '))
+        signal = []
+        for i in time:
+            signal.append(random.randrange(min_A, max_A + 1))
+
+    else:
+        amplitude = float(amplitude)
+        frequency = int(input('frequency [Hz]: '))
+        signal = amplitude * numpy.sin(2 * numpy.pi * time * frequency)
+    return signal
+
+repeat_loop = 'yes'
+
+while(repeat_loop != 'no'):
+    signal_2 += signal_input()
+    repeat_loop = input('Would you like to add another signal? (yes/no): ')
+
+
 signal_merge = signal_1 + signal_2
 
 N = int(duration / step + 1)
@@ -68,3 +103,7 @@ with plt.rc_context({'axes.edgecolor':'#0F4', 'xtick.color':'#0F4', 'ytick.color
 
     plt.tight_layout()
     plt.show()
+
+
+ 
+    
