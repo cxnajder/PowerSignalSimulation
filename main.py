@@ -76,13 +76,13 @@ def fourier(signal):
 
 
 
-def plotSetup(title, signal, x, poz):
+def plotSetup(title, signal, x, poz, xlab = "time"):
     plt.subplot(poz)
     plt.plot(x, signal, color='#0F4', linestyle='solid')
     ax = plt.gca()
     ax.set_facecolor('#0D0208')
     plt.xlabel("voltage")
-    plt.ylabel("time")
+    plt.ylabel(xlab)
     plt.title(title, color = '#0F4')
 
 with plt.rc_context({'axes.edgecolor':'#0F4', 'xtick.color':'#0F4', 'ytick.color':'#0F4', 'figure.facecolor':'#0D0208'}):
@@ -95,11 +95,11 @@ with plt.rc_context({'axes.edgecolor':'#0F4', 'xtick.color':'#0F4', 'ytick.color
     plotSetup("Merged Signals", signal_merge, time, 325)
 
     [s1_xf, s1_tf] = fourier(signal_1)
-    plotSetup("Singal 1 Fourier", s1_tf, s1_xf, 322)
+    plotSetup("Singal 1 Fourier", s1_tf, s1_xf, 322, "frequency")
     [s2_xf, s2_tf] = fourier(signal_2)
-    plotSetup("Singal 2 Fourier", s2_tf, s2_xf, 324)
+    plotSetup("Singal 2 Fourier", s2_tf, s2_xf, 324, "frequency")
     [sm_xf, sm_tf] = fourier(signal_merge)
-    plotSetup("Merged Singal Fourier", sm_tf, sm_xf, 326)
+    plotSetup("Merged Singal Fourier", sm_tf, sm_xf, 326, "frequency")
 
     plt.tight_layout()
     plt.show()
